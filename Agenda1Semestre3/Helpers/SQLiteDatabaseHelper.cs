@@ -49,7 +49,7 @@ namespace Agenda1Semestre3.Helpers
         public Task<List<Produto>> Search(string q)
         {
             // encapsula o procedimento de pesquisa na variavel sql aonde usa o % para pesquisar qualquer valor que contenha o conteudo na variavel q 
-            string sql = "SELECT +* Produto WHERE Descricao LIKE '%"+ q +"%'";
+            string sql = "SELECT * Produto WHERE Descricao LIKE '%"+ q +"%'";
 
             // chama a conexão e executa a pesquisa com o filtro passado pelo q.
             return _conn.QueryAsync<Produto>(sql);
