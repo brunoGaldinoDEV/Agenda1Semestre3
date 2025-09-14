@@ -19,6 +19,7 @@ public partial class ListaProduto : ContentPage
     {
 		try
 		{
+			lista.Clear();
 			//Criando a lista de produtos aguardavel 
 			List<Produto> tmp = await App.Db.GetAll();
 			// Colhendo as informações da lista generica para uma lista de objetos/ForEach
