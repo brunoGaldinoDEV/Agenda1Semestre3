@@ -5,6 +5,7 @@ namespace Agenda1Semestre3.Models
     public class Produto 
     {
         string _descricao;
+        string _categoria;
         double _quantidade;
         double _preco;
 
@@ -20,6 +21,19 @@ namespace Agenda1Semestre3.Models
                 }
 
                 _descricao = value;
+            }
+        }
+        public string Categoria
+        {
+            get => _categoria;
+            set
+            {
+                if (value == null)
+                {
+                    throw new Exception("Por favor, preencha a categoria");
+                }
+
+                _categoria = value;
             }
         }
         public double Quantidade {

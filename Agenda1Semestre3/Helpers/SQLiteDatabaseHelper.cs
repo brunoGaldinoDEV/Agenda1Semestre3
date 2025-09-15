@@ -26,11 +26,11 @@ namespace Agenda1Semestre3.Helpers
         public Task<List<Produto>> Update(Produto p)
         {
             // encapsula o procedimento de UPDATE na variavel sql 
-            string sql = "UPDATE Produto SET Descricao=?, Quantidade=?, Preco=? WHERE Id=?";
+            string sql = "UPDATE Produto SET Descricao=?,  Categoria=?, Quantidade=?, Preco=? WHERE Id=?";
 
             // chama a conexão e executa o update com as informações passadas pela classe modelo.
             return _conn.QueryAsync<Produto>
-                (sql, p.Descricao, p.Quantidade, p.Preco, p.Id );
+                (sql, p.Descricao, p.Categoria, p.Quantidade, p.Preco, p.Id );
         }
 
         //Mais uma Task que retorna o numero de linhas deletadas 
@@ -54,5 +54,24 @@ namespace Agenda1Semestre3.Helpers
             // chama a conexão e executa a pesquisa com o filtro passado pelo q.
             return _conn.QueryAsync<Produto>(sql);
         }
+        public Task<List<Produto>> GetByCategoria(string categoria)
+        {
+            string sql = "SELECT * FROM Produto WHERE Categoria = ?";
+            return _conn.QueryAsync<Produto>(sql, categoria);
+        }
+
+        public Task<List<RelatorioCategoria>> GetTotalPorCategoria()
+        {
+            string sql = "SELECT Categoria, SUM(Quantidade * Preco) AS Total FROM Produto GROUP BY Categoria";
+            return _conn.QueryAsync<RelatorioCategoria>(sql);
+        }
+
+        // Classe auxiliar para receber os dados
+        public class RelatorioCategoria
+        {
+            public string Categoria { get; set; }
+            public double Total { get; set; }
+        }
+
     }
 }

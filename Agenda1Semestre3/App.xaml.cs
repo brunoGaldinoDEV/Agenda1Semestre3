@@ -35,6 +35,8 @@ namespace Agenda1Semestre3
         {
             InitializeComponent();
 
+            Thread.CurrentThread.CurrentCulture = new System.Globalization.CultureInfo("pt-BR");
+
             MainPage = new NavigationPage(new Views.ListaProduto());
         }
     }

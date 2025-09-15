@@ -1,0 +1,35 @@
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="Agenda1Semestre3.Views.Relatorio"
+             Title="Relatório de Gastos">
+
+    <StackLayout Spacing="10" Padding="10">
+        <Frame Padding="0" Margin="10" VerticalOptions="FillAndExpand">
+            <ListView x:Name="lst_relatorio">
+                <ListView.Header>
+                    <Grid ColumnDefinitions=" *, *" BackgroundColor="LightGray">
+                        <Label Text="Categoria" Grid.Column="0" FontAttributes="Bold" />
+                        <Label Text="Total" Grid.Column="1" FontAttributes="Bold" />
+                    </Grid>
+                </ListView.Header>
+                <ListView.ItemTemplate>
+                    <DataTemplate>
+                        <ViewCell>
+                            <Grid ColumnDefinitions=" *, *">
+                                <Label Grid.Column="0" Text="{Binding Categoria}" />
+                                <Label Grid.Column="1" Text="{Binding Total, StringFormat='{}{0:C}'}" />
+                            </Grid>
+                        </ViewCell>
+                    </DataTemplate>
+                </ListView.ItemTemplate>
+            </ListView>
+        </Frame>
+        <!-- Label para o total -->
+        <Label x:Name="lblTotalGeral"
+           Text="Total Geral: R$ 0,00"
+           FontAttributes="Bold"
+           HorizontalOptions="End"
+           Margin="0,10,0,0"/>
+    </StackLayout>
+
+</ContentPage>

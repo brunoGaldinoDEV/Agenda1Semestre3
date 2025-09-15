@@ -29,6 +29,23 @@ public partial class ListaProduto : ContentPage
 		{
             await DisplayAlert("Ops", ex.Message, "Ok");
         }
+
+        try
+        {
+            lista.Clear();
+            List<Produto> tmp = await App.Db.GetAll();
+            tmp.ForEach(i => lista.Add(i));
+
+            // Pegando categorias únicas do banco
+            var categorias = tmp.Select(p => p.Categoria).Distinct().ToList();
+            categorias.Insert(0, "Todas"); // Opção para voltar a mostrar tudo
+
+            pickerCategoria.ItemsSource = categorias;
+        }
+        catch (Exception ex)
+        {
+            await DisplayAlert("Ops", ex.Message, "Ok");
+        }
     }
 
     private void ToolbarItem_Clicked(object sender, EventArgs e)
@@ -49,6 +66,7 @@ public partial class ListaProduto : ContentPage
 		{
 			string q = e.NewTextValue;
 
+			lst_produtos.IsRefreshing = true;
 			//usado para limpar a lista
 			lista.Clear();
 
@@ -61,6 +79,10 @@ public partial class ListaProduto : ContentPage
         {
             await DisplayAlert("Ops", ex.Message, "Ok");
         }
+		finally
+		{
+			lst_produtos.IsRefreshing = false;
+		}
     }
 
     private async void ToolbarItem_Clicked_1(object sender, EventArgs e)
@@ -103,6 +125,67 @@ public partial class ListaProduto : ContentPage
 				BindingContext = p,
 			});
 		}
+        catch (Exception ex)
+        {
+            DisplayAlert("Ops", ex.Message, "Ok");
+        }
+    }
+
+    private async void lst_produtos_Refreshing(object sender, EventArgs e)
+    {
+        try
+        {
+
+            lista.Clear();
+
+			List<Produto> tmp = await App.Db.GetAll();
+
+            tmp.ForEach(i => lista.Add(i));
+        }
+        catch (Exception ex)
+        {
+            await DisplayAlert("Ops", ex.Message, "Ok");
+        }
+		finally
+		{
+			lst_produtos.IsRefreshing = false;
+		}
+    }
+
+    private async void pickerCategoria_SelectedIndexChanged(object sender, EventArgs e)
+    {
+        try
+        {
+            string categoriaSelecionada = pickerCategoria.SelectedItem.ToString();
+            lista.Clear();
+
+            List<Produto> tmp;
+
+            if (categoriaSelecionada == "Todas")
+            {
+                // Mostra tudo
+                tmp = await App.Db.GetAll();
+            }
+            else
+            {
+                // Filtra pela categoria
+                tmp = await App.Db.GetByCategoria(categoriaSelecionada);
+            }
+
+            tmp.ForEach(i => lista.Add(i));
+        }
+        catch (Exception ex)
+        {
+            await DisplayAlert("Ops", ex.Message, "Ok");
+        }
+    }
+
+    private void ToolbarItem_Clicked_2(object sender, EventArgs e)
+    {
+        try
+        {
+            Navigation.PushAsync(new Views.Relatorio());
+        }
         catch (Exception ex)
         {
             DisplayAlert("Ops", ex.Message, "Ok");
